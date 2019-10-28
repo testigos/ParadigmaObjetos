@@ -12,6 +12,6 @@ class Pelicula {
 	}
 	
 	method promedioCalificaciones() {
-		calificaciones.sum{cal => cal.calificacion()}
+		return calificaciones.sum{cal => cal.calificacion()} / calificaciones.size()
 	}
 }
