@@ -9,5 +9,7 @@ object flixnet {
 	method noCalificadas() {
 		return peliculas.filter{pel => calificaciones.contains(pel).negate()}
 	}
-	
+	method trabajoEn(laburante,pelicula) {
+		return pelicula.actores().contains(laburante) or pelicula.director() == laburante
+	}
 }
