@@ -1,5 +1,5 @@
 class Calificacion {
-	var property peli
+	var property titPeli
 	var property calificacion
 	var property usuario
 }
