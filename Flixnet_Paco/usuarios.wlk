@@ -16,11 +16,11 @@ class Usuario {
 			pelicula.agregarCalificacion(calif)
 			calificacionesPeliculas.add(calif)
 			flixnet.calificaciones().add(calif)
-			}
+		 	}
 	}
 	method  mejorCalificada() {
 		if (self.pelisQueCalificoYVio().isEmpty().negate()) {
-			return (pelisQueCalificoYVio()).max{cal => cal.calificacion()}
+			return self.pelisQueCalificoYVio().max{cal => cal.calificacion()}
 		} else {
 			// Como pingo se hace un error
 		}
