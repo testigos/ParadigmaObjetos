@@ -1,0 +1,93 @@
+import Habitantes.*
+import fuerza.*
+
+describe "tests de Habitantes" {
+	
+	const granada = new Arma (potencia = 50)
+	const pistola = new Arma (potencia = 40)
+	const guante = new Arma (potencia = 10)
+	const sable1 = new Arma (potencia = 100)
+	const sable2 = new Arma (potencia = 500)
+	
+	const hab1 = new Habitante(inteligencia = 10, valentia = 70)
+	const sold1 = new Soldado(inteligencia = 10, valentia = 70, armas = [granada,pistola,guante])
+	
+	const jedi1 = new Maestro(inteligencia = 10, valentia = 70, cantidadMidiclorianos = 9000, sableDeLuz = sable1, tiempo = 6, lado = new LadoLuminoso())
+	const sith1 = new Maestro(inteligencia = 10, valentia = 70, cantidadMidiclorianos = 10000,sableDeLuz = sable2, tiempo = 10, lado = new LadoOscuro())
+	
+	
+	const s1 = new Suceso(cargaEmocional = 100000)
+	const s2 = new Suceso(cargaEmocional = 50)
+	const s3 = new Suceso(cargaEmocional = 6000.invert())
+	
+	const planeta1 = new Planeta(habitantes = [hab1,sold1,jedi1,sith1])
+	
+	
+	
+	test "hab1 tiene 80 de poder" {
+		assert.equals(80,hab1.poder())
+	}
+	
+	test "sold1 tiene 180 de poder" {
+		assert.equals(180,sold1.poder())
+	}
+	
+	test "fuerza de jedi1 es igual a 689" {
+		assert.equals(689,jedi1.poder())
+	}
+	
+	test "fuerza de sith1 es igual a 1100" {
+		assert.equals(1100,sith1.poder())
+	}
+	
+	test "jedi1 incrementa su tiempo como jedi a 7" {
+		jedi1.vivirSuceso(s3)
+		assert.equals(7,jedi1.tiempo())
+	}
+	
+	test "sith1 incrementa su odio si vive el s2 a 1100"{
+		sith1.vivirSuceso(s2)
+		assert.equals(1100,sith1.lado().constanteDeFuerza())
+	}
+	
+	test "sith1 cambia de lado si vive el s1"{
+		sith1.vivirSuceso(s1)
+		assert.equals("jedi",sith1.tipoDeMaestro())
+	}
+	
+	test "jedi1 cambia de paz interior a 1050 si vive el suceso 2"{
+		jedi1.vivirSuceso(s2)
+		assert.equals(1050,jedi1.lado().constanteDeFuerza())
+	}
+	
+	test "jedi1 cambia de lado si vive el suceso 3 "{
+		jedi1.vivirSuceso(s3)
+		assert.equals("sith",jedi1.lado().nombreDeSusMaestros())
+	}
+	
+	test "poder del planeta igual a 2049" {
+		assert.equals(2049,planeta1.poder())
+	}
+	
+	test "planeta1 tiene orden" {
+		assert.that(planeta1.tieneOrden())
+	}
+}
+
+describe "test pedidos" {
+	
+	const sable1 = new Arma (potencia = 100)
+	const sucesoParaOscuridad = new Suceso(cargaEmocional = -100000)
+	const sucesoParaLuz = new Suceso(cargaEmocional = 200000)
+	const anakin = new Maestro(inteligencia = 10, valentia = 10,cantidadMidiclorianos = 9000, sableDeLuz = sable1, tiempo = 6,lado = new LadoLuminoso())
+	
+	test "anakin se convierte al lado oscuro" {
+		anakin.vivirSuceso(sucesoParaOscuridad)
+		assert.equals("sith",anakin.tipoDeMaestro())
+	}
+	
+	test "anakin se convierte al lado luminoso" {
+		anakin.vivirSuceso(sucesoParaLuz)
+		assert.equals("jedi",anakin.tipoDeMaestro())
+	}
+}
