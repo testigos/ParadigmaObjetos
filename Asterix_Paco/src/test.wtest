@@ -1,0 +1,52 @@
+import example.*
+
+describe "pruebas generales" {
+	const pedro = new Persona(fuerza = 4, resistencia = 2)
+	const julio = new Persona(fuerza = 3, resistencia = 4)
+	const mario = new Persona(fuerza = 1, resistencia = 7)
+	const carlo = new Persona(fuerza = 8, resistencia = 0)
+	const dulceDeLeche = new DulceDeLeche(cantidad = 0)
+	const muerdago = new ManojoDeMuerdago(cantidad = 6)
+	const zanahoria = new ZumoDeZanahoria(cantidad = 3)
+	const multijugos = new Pocion(ingredientes = [dulceDeLeche])
+	const amortentia = new Pocion(ingredientes = [muerdago,zanahoria])
+	
+	test "el poder de pedro es 8" {
+		assert.equals(8,pedro.poder())
+	}
+	test "el poder de julio es 12" {
+		assert.equals(12,julio.poder())
+	}
+	test "el poder de mario es 7" {
+		assert.equals(7,mario.poder())
+	}
+	test "el poder de carlo es 0" {
+		assert.equals(0,carlo.poder())
+	}
+	test "pedro esta en combate" {
+		assert.that(pedro.estaEnCombate())
+	}
+	test "carlo no esta en combate" {
+		assert.notThat(carlo.estaEnCombate())
+	}
+	test "carlo al beber multijugos queda con 18 de fuerza" {
+		carlo.beberPocion(multijugos)
+		assert.equals(18,carlo.fuerza())
+	}
+	test "carlo al beber multijugos queda con 2 de resistencia" {
+		carlo.beberPocion(multijugos)
+		assert.equals(2,carlo.resistencia())
+	}
+	test "carlo al beber multijugos queda en combate" {
+		carlo.beberPocion(multijugos)
+		assert.that(carlo.estaEnCombate())
+	}
+	test "pedro al beber amortentia queda con 30 de fuerza" {
+		pedro.beberPocion(amortentia)
+		assert.equals(30,pedro.fuerza())
+	}
+	test "pedro al beber amortentia queda con 2 de resistencia" {
+		pedro.beberPocion(amortentia)
+		assert.equals(2,pedro.resistencia())
+	}
+}
