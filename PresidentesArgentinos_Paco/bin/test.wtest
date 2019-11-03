@@ -1,0 +1,62 @@
+import example.*
+
+describe "pruebas generales" {
+	const bicisendas = new InauguracionObras(cantPersonas = 1, importancia = 2, valorExtra = viales)
+	const barrioOlimpico = new InauguracionObras(cantPersonas = 2, importancia = 1, valorExtra = habitacionales)
+	const hospital = new InauguracionObras(cantPersonas = 2, importancia = 3, valorExtra = salud)
+	const intensidadDeAplauso = new ValorExtra(valor=2)
+	const noSeInundaMas = new Discurso(cantPersonas = 1, importancia = 2, valorExtra = intensidadDeAplauso) 
+	const todasYTodos = new Discurso(cantPersonas = 3, importancia = 1, valorExtra = intensidadDeAplauso) 
+	const bajarPobreza = new Promesa(cantPersonas = 2, cumplida = false, importancia = 2, valorExtra = intensidadDeAplauso) 
+	const panamaPapers = new Denuncias(cantPersonas = 4, importancia = 2, valorExtra = periodista)
+	const nisman = new Politico(cantSeguidores = 2, valor = 0)
+	const otesur = new Denuncias(cantPersonas = 3, importancia = 2, valorExtra = nisman)
+	const macri = new Presidente(actos = [bicisendas,barrioOlimpico,noSeInundaMas,bajarPobreza,panamaPapers], aniosDesdeMuerte = 0)
+	const cristina = new Presidente(actos = [hospital,todasYTodos,bajarPobreza,otesur], aniosDesdeMuerte = 13)
+	const argentina = new Pais(presidentes = [macri, cristina])
+	
+	test "impacto de bicisendas es 12" {
+		assert.equals(12,bicisendas.impacto())
+	}
+	test "impacto de barrioOlimpico es 22" {
+		assert.equals(22,barrioOlimpico.impacto())
+	}
+	test "impacto de hospital es 56" {
+		assert.equals(56,hospital.impacto())
+	}
+	test "impacto de noSeInundaMas es 4" {
+		assert.equals(4,noSeInundaMas.impacto())
+	}
+	test "impacto de todasYTodos es 6" {
+		assert.equals(6,todasYTodos.impacto())
+	}
+	test "impacto de bajarPobreza es -16" {
+		assert.equals(-16,bajarPobreza.impacto())
+	}
+	test "impacto de panamaPapers es -16" {
+		assert.equals(-16,panamaPapers.impacto())
+	}
+	test "impacto de otesur es -12" {
+		assert.equals(-12,otesur.impacto())
+	}
+	test "imagen positiva de macri es 6" {
+		assert.equals(6,macri.imagenPositiva())
+	}
+	test "imagen positiva de cristina es 47" {
+		assert.equals(47,cristina.imagenPositiva())
+	}
+	test "cristina es la presidente con mayor imagen positiva de argentina" {
+		assert.equals(cristina,argentina.presiMayorImPos())
+	}
+	test "algun presidente realizo mas de 4 actos en la historia de argentina" {
+		assert.that(argentina.presidentes().any{pre => pre.actos().size() > 4})
+	}
+	test "se cumplen las promesas de macri" {
+		macri.cumplirTodasPromesas() 
+		assert.that(bajarPobreza.cumplida())
+	}
+	test "se cumplen las promesas de cristina" {
+		cristina.cumplirTodasPromesas() 
+		assert.that(bajarPobreza.cumplida())
+	}
+}

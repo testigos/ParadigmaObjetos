@@ -1,0 +1,64 @@
+import example.*
+
+describe "tests de Habitantes" {
+
+    const granada = new Arma (potencia = 50)
+    const pistola = new Arma (potencia = 40)
+    const guante = new Arma (potencia = 10)
+    const sable1 = new Arma (potencia = 100)
+    const sable2 = new Arma (potencia = 500)
+
+    const hab1 = new Habitante(inteligencia = 10, valentia = 70)
+    const sold1 = new Soldado(inteligencia = 10, valentia = 70, armas = [granada,pistola,guante])
+    const jedi1 = new Maestro(inteligencia = 10, valentia = 70, mc = 9000, sable = sable1, tiempoComoJediOSith = 6, ladoFuerza = new Luminoso(pazUOdio = 30))
+    const sith1 = new Maestro(inteligencia = 10, valentia = 70, mc = 10000, sable = sable2, tiempoComoJediOSith = 10, ladoFuerza = new Oscuro(pazUOdio = 1000
+    	
+    ))
+   
+    const s1 = new Suceso(cargaEmocional = 100000)
+    const s2 = new Suceso(cargaEmocional = 50)
+    const s3 = new Suceso(cargaEmocional = 6000.invert())
+
+    const planeta1 = new Planeta(habitantes = [hab1,sold1,jedi1,sith1])
+    
+    test "vivir suceso nos crece el tiempo en 1" {
+    	jedi1.vivirSuceso(s2)
+    	assert.equals(7,jedi1.tiempoComoJediOSith())
+    }
+    
+    test "vivir s2 nos sube 50 la paz interior" {
+    	jedi1.vivirSuceso(s2)
+    	assert.equals(80,jedi1.ladoFuerza().pazUOdio())
+    }
+    
+    test "cambia de lado sith1 cuando vive s1 (si tiene pazUOdio 500 es que cambio de lado)" {
+    	sith1.vivirSuceso(s1)
+    	assert.equals(500,sith1.ladoFuerza().pazUOdio())
+    }
+    
+    test "cambia de lado jedi1 cuando vive s3 (si tiene pazUOdio 1000 es que cambio de lado)" {
+    	jedi1.vivirSuceso(s3)
+    	assert.equals(1000,sith1.ladoFuerza().pazUOdio())
+    }
+    
+    test "planeta1 posee orden" {
+    	assert.that(planeta1.poseeOrden())
+    }
+    
+    test "hab1 tiene 80 de poder" {
+        assert.equals(80,hab1.poder())
+    }
+
+    test "sold1 tiene 180 de poder" {
+        assert.equals(180,sold1.poder())
+    }
+
+    test "poder de jedi1 es igual a 689" {
+        assert.equals(689,jedi1.poder())
+    }
+
+    test "poder de sith1 es igual a 1100" {
+        assert.equals(1100,sith1.poder())
+    }
+
+}
