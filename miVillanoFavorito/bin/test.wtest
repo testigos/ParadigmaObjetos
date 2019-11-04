@@ -1,0 +1,54 @@
+import minions.*
+import villano.*
+import ciudad.*
+
+describe "tests" {
+	
+	const obelisco = new Piramide(altura = 1000)
+	
+	const bsas = new Ciudad(temperatura = 20, objetos = [obelisco,laLuna,sueroMutante])
+	
+	const rayoEncoger = new Arma(nombre = "rayo para encoger", potencia = 20)
+	const lampara = new Arma(nombre = "lampara", potencia = 10)
+	const rayoCongelador = new Arma(nombre = "rayo congelante", potencia = 20)
+	
+	const amarillo = new Minion(armas = [rayoEncoger,lampara], bananas = 400)
+	const violeta = new Minion(armas = [lampara],bananas = 200)
+	const amarillo2 = new Minion(armas = [rayoEncoger,rayoCongelador,lampara], bananas = 300)
+	
+	const villano = new Villano(minions = [amarillo,violeta,amarillo2], ciudadEnLaQueVive = bsas)
+	
+	const congelar = new Congelar()
+	const robo = new Robo(objetoARobar = obelisco)
+
+	test "La concentracion del minion violeta es de 200" {
+		violeta.tomarSuero()
+		assert.equals(199,violeta.concentracion())
+	}
+	
+	test "La concentracion del minion amarillo es de 8000" {
+		assert.equals(8000,amarillo.concentracion())
+	}
+	
+	test "Planeo el congelamiento y el minion amarillo2 esta en la lista de minions asignados" {
+		villano.planificarMaldad(congelar)
+		assert.that(congelar.minionsAsignados().contains(amarillo2))
+	}
+	
+	test "Cuando realizo la maldad congelar luego de planificarlaamarillo2 termina con 10 bananas mas" {
+		villano.planificarMaldad(congelar)
+		villano.realizarMaldad(congelar)
+		assert.equals(310,amarillo2.bananas())
+	}
+	
+	test "Cuando realizo la maldad congelar sin prepararla me tira error diciendo que debo prepararla" {
+		assert.throwsExceptionWithMessage("Debes planificar la maladad antes de realizarla", {villano.realizarMaldad(congelar)})
+	}
+	
+	test "Cuando realizo la maldad robar despues de planificarla amarillo2 termina con 4 armas" {
+		villano.planificarMaldad(robo)
+		villano.realizarMaldad(robo)
+		assert.equals(4,amarillo2.cantArmas())
+	}
+	
+}
