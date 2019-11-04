@@ -1,0 +1,69 @@
+
+import presidentesArgentinos.*
+import actosDeGobierno.*
+
+describe "tests de imagenes positiva" {
+	
+	const pol1 = new Politico(cantSeguidores = 6)
+	const per1 = new Periodista()
+	
+	const obra1 = new InauguracionDeObra(naturalezaDeLaObra = vial, cantidadAfectados = 10, importancia = 5)
+	const denuncia1 = new DenunciaPorTv(denunciante = pol1, audiencia = 5, cantidadAfectados = 10, importancia = 5)
+	const discurso1 = new Discurso(intensidadDelAplauso = 3, cantidadAfectados = 10, importancia = 5)
+	const promesa1 = new PromesaDeCampania(descripcionPromesa = "bajar pobreza", intensidadDelAplauso = 3, cantidadAfectados = 10, importancia = 5)
+	const promesa2 = new PromesaDeCampania(descripcionPromesa = "bajar pobreza", intensidadDelAplauso = 3, cantidadAfectados = 10, importancia = 5)
+	
+	const alfonsin = new Presidente(actosDeGobierno = [promesa1,promesa2], tiempoDesdeSuMuerte = 5)
+	const nestor = new Presidente(actosDeGobierno = [obra1,denuncia1], tiempoDesdeSuMuerte = 2)
+	const videla = new Presidente(actosDeGobierno = [discurso1,promesa1], tiempoDesdeSuMuerte = 10)
+	
+	const argentina = new Pais(presidentes = [alfonsin,nestor,videla])
+	
+	test "impacto obra1 es 5" {
+		assert.equals(5,obra1.impacto())
+	}
+	
+	test "impacto denuncia1 es 250" {
+		assert.equals(250,denuncia1.impacto())
+	}
+	
+	test "impacto discurso1 es 150" {
+		assert.equals(150,discurso1.impacto())
+	}
+	
+	test "impacto promesa1 es 300" {
+		promesa1.cumplir()
+		assert.equals(300,promesa1.impacto())
+	}
+	
+	test "Imagen positiva alfonsin es 12,75" {
+		assert.equals(12.75,alfonsin.imagenPositiva())
+	}
+
+	test "alfonsin tiene muchos actos " {
+		assert.that(alfonsin.muchosActos())
+	}
+	
+	test "alfonsin es el presidente con mayor imagen positiva de la argentina" {
+		assert.equals(alfonsin,argentina.presidenteMayorImagenPositiva())
+	}
+	
+	test "alfonsin realizo el act3" {
+		var act3 = new Discurso(intensidadDelAplauso = 3, cantidadAfectados = 20, importancia = 5)
+		alfonsin.realizarActo(act3)
+		assert.that(alfonsin.actosDeGobierno().contains(act3))
+	}
+	
+	test "una denuncia hecha por un periodista era en relaidad hecha por un politico" {
+		var denunciaMala = new DenunciaPorTv(denunciante =per1,audiencia = 5,cantidadAfectados = 10,importancia = 5)
+		alfonsin.realizarActo(denunciaMala)
+		denunciaMala.denunciante(pol1)
+		assert.equals(25.25,alfonsin.imagenPositiva())
+	}
+	
+	test "cumplir promesas de alfonsin" {
+		alfonsin.cumplirPromesasIncumplidas()
+		assert.that(alfonsin.actosDeGobierno().all{x => x.estaCumplida()})
+	}
+	
+}

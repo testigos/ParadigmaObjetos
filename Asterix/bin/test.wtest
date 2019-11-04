@@ -1,0 +1,35 @@
+import pociones.*
+import personas.*
+
+
+describe "tests parte 1" {
+	
+	const muerdago = new Muerdago(cantidad = 6)
+	const aceiteDeRoca = new AceiteDeRoca(cantidad = 6)
+	const dulceDeLeche = new DulceDeLeche(cantidad = 1)
+	const zumo = new ZumoZanahoria(cantidad = 6)
+	
+	const multijugos = new Pocion(ingredientes = [muerdago,aceiteDeRoca])
+	const felixFelicis = new Pocion(ingredientes = [dulceDeLeche,zumo])
+	
+	const harry = new Persona(fuerza = 2, resistencia = 3)
+	
+	test "harry Potter toma la pocion multijugos y tiene fuerza 18" {
+		harry.tomarPocion(multijugos)
+		assert.equals(48,harry.fuerza())
+	}
+	
+	test "harry Potter toma la pocion multijugos y tiene resistencia 18" {
+		harry.tomarPocion(multijugos)
+		assert.equals(1.5,harry.resistencia())
+	}
+	
+	test "el poder de harry despues de tomar la multijugos es de 72" {
+		harry.tomarPocion(multijugos)
+		assert.equals(72,harry.poder())
+	}
+}
+
+describe "tests de Grupos" {
+	
+}

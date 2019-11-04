@@ -1,0 +1,58 @@
+import personas.*
+import agresiones.*
+import reacciones.*
+import denuncias.*
+
+
+describe "tests de una persona" {
+	
+	const combustible = new ElementosAgresivos(nombre = "combustible")
+	
+	const agr1 = new Agresion(lugar = "bs as", personaQueEfectuo = "jose", palabrasUtilizadas = ["puta","inferior","pelotuda"])
+	const agr2 = new Agresion(lugar = "bs as", personaQueEfectuo = "jose", palabrasUtilizadas = ["inferior","pelotuda"])
+	const agr3 = new AgresionFisica(lugar = "bs as", personaQueEfectuo = "jose", palabrasUtilizadas = ["puta","inferior","pelotuda"],elementoUtilizado = combustible)
+	
+	const p1 = new Persona(agresionesPrevias = [agr1,agr2,agr3], reaccionAnteAgresion = militante, familiares = ["jose","pepe"], agresionesDenunciadas = [])
+	const p2 = new Persona(agresionesPrevias = [agr1,agr2,agr3], reaccionAnteAgresion = aguerrida, familiares = ["jose","pepe"], agresionesDenunciadas = [])
+	
+	
+	test "agr1 es una agresion grave" {
+		assert.that(agr1.esGrave())
+	}
+	
+	test "agr3 es una agresion ignea" {
+		assert.that(agr3.esIgnea())
+	}
+	
+	test "cantidad de agresiones hechas por jose en p1 es 3" {
+		assert.equals(3,p1.cantidadAgresionesMismaPersona("jose"))
+	}
+	
+	test "p1 si es amenazado de muerte pasa a sera aguerrida" {
+		p1.amenazaDeMuerte()
+		assert.equals(aguerrida,p1.reaccionAnteAgresion())
+	}
+	
+	test "p1 tiene agresiones graves y personales" {
+		assert.that(p1.tieneAgresionesGravesYPersonales())
+	}
+	
+	test "p1 considera denunciable a agr1" {
+		assert.that(p1.esDenunciable(agr1))
+	}
+	
+	test "La policia registra que p1 denuncio agr1" {
+		policia.registrarDenuncia(agr1,p1)
+		assert.that(policia.denuncio(p1))
+	}
+	
+	test "P1 denuncia agr1 y aparece en agresiones denunciadas" {
+		p1.hacerDenuncia(agr1)
+		assert.that(p1.agresionesDenunciadas().contains(agr1))
+	}
+	
+	test "p1 si es acompanada por p2 se vuelve aguerrida" {
+		p1.acompaniamiento(p2)
+		assert.equals(aguerrida,p1.reaccionAnteAgresion())
+	}
+}
